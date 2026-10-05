@@ -1,0 +1,6 @@
+# secrets
+deploy/.env
+# build output
+backend/target/
+agent/content-guardian-agent
+*.class

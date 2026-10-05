@@ -1,0 +1,56 @@
+server:
+  port: 8080
+  forward-headers-strategy: framework   # behind Caddy reverse proxy
+
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/guardian}
+    username: ${DB_USER:guardian}
+    password: ${DB_PASSWORD:guardian}
+  jpa:
+    hibernate:
+      ddl-auto: none        # schema is owned by Flyway, never by Hibernate
+    open-in-view: false
+    properties:
+      hibernate.jdbc.time_zone: UTC
+  flyway:
+    enabled: true
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+  mail:
+    host: ${SMTP_HOST:smtp.postmarkapp.com}
+    port: ${SMTP_PORT:587}
+    username: ${SMTP_USER:}
+    password: ${SMTP_PASSWORD:}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+app:
+  # base64 32-byte key for AES-256-GCM (guardian email at rest)
+  crypto-key: ${APP_CRYPTO_KEY}
+  # base64 key for the deterministic email lookup hash
+  email-hmac-key: ${APP_EMAIL_HMAC_KEY}
+  # base64 >=32-byte key for signing guardian + uninstall JWTs
+  jwt-signing-key: ${APP_JWT_SIGNING_KEY}
+  from-address: ${APP_FROM_ADDRESS:alerts@example.com}
+  heartbeat-timeout-seconds: ${APP_HEARTBEAT_TIMEOUT_SECONDS:300}
+  event-retention-days: ${APP_EVENT_RETENTION_DAYS:90}
+  sweep-interval-ms: ${APP_SWEEP_INTERVAL_MS:60000}
+  purge-cron: ${APP_PURGE_CRON:0 30 3 * * *}
+
+logging:
+  level:
+    root: INFO

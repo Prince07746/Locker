@@ -1,0 +1,6 @@
+# Replace api.example.com with your real domain. Caddy obtains and renews
+# Let's Encrypt certificates automatically, so TLS in transit is free.
+api.example.com {
+    encode gzip
+    reverse_proxy app:8080
+}
