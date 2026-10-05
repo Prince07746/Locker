@@ -1,0 +1,17 @@
+# Content Guardian blocklist
+# Format:  <category> <domain>
+# A parent-domain entry also covers its subdomains.
+# Replace/extend this with a maintained category feed in production.
+
+adult example-adult-site.com
+adult another-adult-site.net
+gambling example-casino.com
+gambling bet-example.com
+
+# Block common DNS-over-HTTPS resolvers so browsers cannot tunnel around the
+# filter. (Browser policies in the installer disable DoH too; this is defense
+# in depth.)
+doh dns.google
+doh cloudflare-dns.com
+doh mozilla.cloudflare-dns.com
+doh dns.quad9.net
